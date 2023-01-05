@@ -12,11 +12,11 @@ e.g.
 public class T322 {
     public static void main(String[] args) {
         int[] coins = new int[]{2, 5, 10, 1};
-        System.out.println(new Solution().coinChange(coins, 27));
+        System.out.println(new Solution_T322_self().coinChange(coins, 27));
     }
 }
 
-class Solution {
+class Solution_T322_self {
     /*
     完全背包-组合
         最少：dp意义：对应的硬币数目
