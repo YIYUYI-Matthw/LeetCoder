@@ -27,3 +27,5 @@ hs_err_pid*
 out/
 .idea/
 target/
+.gitignore
+LeetCoder.iml
