@@ -6,11 +6,11 @@ package DP;
 public class T377 {
     public static void main(String[] args) {
         int[] nums = new int[]{1, 2, 3};
-        System.out.println(new Solution().combinationSum4(nums, 4));
+        System.out.println(new Solution_T377_self().combinationSum4(nums, 4));
     }
 }
 
-class Solution {
+class Solution_T377_self {
     /*
     完全背包-组合：coin在外
      */
