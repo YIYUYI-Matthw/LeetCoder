@@ -19,11 +19,11 @@ public class T139 {
     public static void main(String[] args) {
         List<String> wordDict = new ArrayList<>(Arrays.asList("cats", "dog", "sand", "and", "cat"));
         String s = "catsanddog";
-        System.out.println(new Solution().wordBreak(s, wordDict));
+        System.out.println(new Solution_T139_self().wordBreak(s, wordDict));
     }
 }
 
-class Solution {
+class Solution_T139_self {
     /*
     完全背包
     每次匹配后n位：substring
