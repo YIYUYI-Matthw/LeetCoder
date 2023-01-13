@@ -115,3 +115,19 @@ class Solution_T121 {
         return dp[days - 1];
     }
 }
+
+class Solution_T121_2023 {
+    // 这个dp数组应该是不需要的：每次都和前面一个比，所以只需要留一个即可
+    public int maxProfit(int[] prices) {
+        if (prices.length <= 1)
+            return 0;
+        int max_profit = 0;
+        int pre_min = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (pre_min > prices[i])
+                pre_min = prices[i];
+            max_profit = Math.max(max_profit, prices[i] - pre_min);
+        }
+        return max_profit;
+    }
+}
