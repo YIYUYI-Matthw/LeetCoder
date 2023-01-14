@@ -11,8 +11,8 @@ package DP;
 public class T121 {
     public static void main(String[] args) {
         // 这里的DP比枚举的方法只少了一次全体的排序
-        int[] prices = {1, 2};
-        System.out.println(new Solution_T121().maxProfit(prices));
+        int[] prices = {7, 1, 5, 3, 6, 4};
+        System.out.println(new Solution_T121_self_dp().maxProfit(prices));
     }
 }
 
@@ -129,5 +129,46 @@ class Solution_T121_2023 {
             max_profit = Math.max(max_profit, prices[i] - pre_min);
         }
         return max_profit;
+    }
+}
+
+class Solution_T121_self_dp {
+    /*
+    如果不含冷冻期：解决不了啦
+        dp[i][j]：在前i个价格区间内，这一次选择j=0买或j=1卖的最大利润
+        dp[i][0] = max(dp[i-1][1]-price, dp[i-1][0])
+        dp[i][1] = max(dp[i-1][1], price + dp[i-1][0])
+    */
+    /*
+    两（三）种状态：
+        dp[i][j]：前i个价格区间在j状态时的利润
+
+        dp[i][j] = max(dp[i-1][买], dp[i-1][卖], dp[i-1][啥也不干])
+
+        dp[i][j] = ①
+
+
+        // 以下弃用
+        ① 卖过 & 非冷冻期：可以买
+        ② 非卖过：可以卖：比较利润
+
+        ① 买：
+            1） 冷冻期：利润不变，买不了
+            2） 非冷冻期：
+                a. 买：profit = profit - price
+                b. 不买：profit不变
+        ② 卖：比较今天卖和上一次卖的利润
+     */
+    public int maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length][2];
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        dp[1][0] = Math.max(dp[0][0], dp[0][1] - prices[1]);
+        dp[1][1] = Math.max(dp[0][1], prices[1] - dp[0][0]);
+        for (int i = 2; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 2][1] + prices[i] + dp[i - 1][0]);
+        }
+        return dp[prices.length - 1][1];
     }
 }
