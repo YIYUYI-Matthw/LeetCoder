@@ -11,10 +11,14 @@ package DP;
 解释: 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
  */
 public class T309 {
+    public static void main(String[] args) {
+        int[] prices = new int[]{1, 2, 3, 0, 2};
+        System.out.println(new Solution_T309_self_org().maxProfit(prices));
+    }
 
 }
 
-class Solution {
+class Solution_T309_dep {
     /*
     如果不含冷冻期：
         dp[i][j]：在前i个价格区间内，这一次选择j=0买或j=1卖的最大利润
@@ -50,5 +54,28 @@ class Solution {
             dp[i][1] = Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
         }
         return dp[prices.length - 1][1];
+    }
+}
+
+class Solution_T309_self_org {
+    /*
+    dp[i]表示第i天结束后（实际上是到第二天了）的maxprofit
+    每一天有四种状态：持股、（非持股）冷冻期、非持股非冷冻期
+    约定：买入为负收入、卖出为正收入，买入价越低、卖出价越高则利润越大
+    dp[i][0] = max(dp[i-1][0], dp[i-1][2]-prices[i])
+    dp[i][1] = dp[i-1][0]+prices[i-1] // 冷冻期：上一天卖了：只有持股的状态下才能卖
+    dp[i][2] = max(dp[i-1][1], dp[i-1][2])
+     */
+    public int maxProfit(int[] prices) {
+        if (prices.length == 1)
+            return 0;
+        int[][] dp = new int[prices.length][3];
+        dp[0][0] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+            dp[i][1] = dp[i - 1][0] + prices[i];
+            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
+        }
+        return Math.max(dp[prices.length - 1][1], dp[prices.length - 1][2]);
     }
 }
