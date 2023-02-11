@@ -5,10 +5,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+// TODO：二刷：随想录题解
+
+/*
+给定一个含有 n 个正整数的数组和一个正整数 target 。
+找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+ */
 public class T209 {
     public static void main(String[] args) {
-        int[] nums = {2, 3, 1, 2, 4, 3};
-        System.out.println(new Solution_T29_doubP().minSubArrayLen(7, nums));
+        int[] nums = {2, 3, 1, 1, 1, 1, 1};
+        System.out.println(new Solution_T209_double().minSubArrayLen(5, nums));
     }
 }
 
@@ -95,5 +101,46 @@ class Solution_T209_Carl {
             }
         }
         return result == Integer.MAX_VALUE ? 0 : result;
+    }
+}
+
+class Solution_T209_again {
+    public int minSubArrayLen(int target, int[] nums) {
+        int sum = 0, cl = 0, len = nums.length + 1;
+        int left = 0, right;
+        for (right = 0; right < nums.length; right++) {
+            sum += nums[right];
+            cl++;
+            while (sum >= target) {
+                len = Math.min(cl, len);
+                if (sum - nums[left] >= target) {
+                    len = --cl < len ? cl : len;
+                    sum -= nums[left++];
+                } else {
+                    break;
+                }
+            }
+        }
+        len = len == nums.length + 1 ? 0 : len;
+        return len;
+    }
+}
+
+class Solution_T209_double {
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 0, right = 0, sum = 0, currentLen = 0, minLen = (int) 1e5 + 1;
+        for (; right < nums.length; right++) {
+            sum += nums[right];
+            currentLen += 1;
+            if (sum >= target) {
+                while (left <= right && sum - nums[left] >= target) {
+                    // TODO：优化：currentLen = right - left +1
+                    sum -= nums[left++];
+                    currentLen--;
+                }
+                minLen = Math.min(currentLen, minLen);
+            }
+        }
+        return sum >= target ? minLen : 0;
     }
 }

@@ -2,9 +2,14 @@ package Array.螺旋矩阵;
 
 import java.util.Arrays;
 
+// TODO：二刷：官方题解
+
+/*
+给你一个正整数 n ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。
+ */
 public class T59 {
     public static void main(String[] args) {
-        int[][] res_mat = new Solution_T59_Carl().generateMatrix(4);
+        int[][] res_mat = new Solution_T59_again().generateMatrix(6);
         for (int[] temp : res_mat) {
             System.out.println(Arrays.toString(temp));
         }
@@ -45,5 +50,28 @@ class Solution_T59_Carl {
         if (n % 2 == 1)
             res_mat[n / 2][n / 2] = num;
         return res_mat;
+    }
+}
+
+class Solution_T59_again {
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        int num = 1;
+        int i = 0, j;
+        for (; i < n / 2; i++) {
+            num += i == 0 ? 0 : 4 * (n - (2 * (i - 1)) - 1);
+            for (j = 0; j < n - (2 * i) - 1; j++) {
+                int ctn_row = n - (2 * i) - 1; // 每行这么多数字
+                // 上右下左:(4 * i * (ctn_row + 2)
+                res[i][i + j] = num + j;
+                res[i + j][n - i - 1] = num + j + ctn_row;
+                res[n - i - 1][n - 1 - j - i] = num + j + 2 * ctn_row;
+                res[n - 1 - j - i][i] = num + j + 3 * ctn_row;
+            }
+        }
+        // 补中间的：n为奇数
+        if (n % 2 != 0)
+            res[n / 2][n / 2] = n * n;
+        return res;
     }
 }
